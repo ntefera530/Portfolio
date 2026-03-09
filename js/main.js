@@ -19,18 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
     reveals.forEach(el => observer.observe(el));
   }, 100);
 
-  // ── ACTIVE NAV LINK HIGHLIGHT ──
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
+    // ── ACTIVE NAV LINK HIGHLIGHT ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
+    const scrollBottom = window.scrollY + window.innerHeight;
+    const pageHeight = document.documentElement.scrollHeight;
+
+    // If at the bottom of the page, force the last section active
+    if (scrollBottom >= pageHeight - 10) {
+        current = sections[sections.length - 1].id;
+    } else {
+        sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+        });
+    }
+
     navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
     });
-  });
+    });
 
 });
 
